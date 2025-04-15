@@ -1,0 +1,113 @@
+/* Fondo desenfocado con imagen */
+.login-bg {
+    min-height: 100vh;
+    min-width: 100vw;
+    background: url('../Imagenes/fondo_bar.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Efecto glassmorphism */
+.login-glass {
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 2.5em 2em 2em 2em;
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1em;
+}
+
+.login-glass h2 {
+    color: #222;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.2em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.9em 2.5em 0.9em 1em;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.7);
+    font-size: 1em;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: background 0.2s;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    background: rgba(255,255,255,0.9);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #888;
+    user-select: none;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1em;
+    background: #FFD600;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0.5em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s, color 0.2s;
+}
+
+.login-btn:hover {
+    background: #ffe066;
+    color: #111;
+}
+
+.forgot-link {
+    display: block;
+    margin-top: 1.2em;
+    color: #333;
+    text-align: center;
+    text-decoration: underline;
+    font-size: 0.98em;
+    cursor: pointer;
+}
+
+.error {
+    color: #d32f2f;
+    margin-top: 1em;
+    text-align: center;
+    font-size: 0.98em;
+}
