@@ -1,4 +1,43 @@
-/* Fondo desenfocado con imagen */
+.bienvenida-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(255, 255, 255, 0.12);
+    max-width: 400px;
+    margin: auto;
+}
+    
+
+.bienvenida-logo {
+    width: 610px;
+    margin-bottom: 24px;
+}
+
+body {
+    background-image: url('../Imagenes/index.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.bienvenida-titulo {
+    color: #f2ff00cb    ;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 21px;
+}
+
+.bienvenida-redirigiendo {
+    color: #f2ff00cb;
+    font-weight: bold;
+    margin-top: 12px;
+    font-family: 'Poppins', sans-serif;
+}
+
 .login-bg {
     min-height: 100vh;
     min-width: 100vw;
@@ -10,7 +49,6 @@
     position: relative;
 }
 
-/* Efecto glassmorphism */
 .login-glass {
     background: rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);

@@ -2,26 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inventario Bar</title>
+    <title>Bienvenido - Inventario Bar</title>
     <link rel="stylesheet" href="css/styles.css">
+    <meta http-equiv="refresh" content="1;url=login.html">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Inventario del Bar</h1>
-        <button id="logoutBtn">Cerrar sesión</button>
-    </header>
-    <nav>
-        <button class="nav-btn" data-section="productos">Productos</button>
-        <button class="nav-btn" data-section="movimientos">Movimientos</button>
-    </nav>
-    <main>
-        <section id="productosSection" class="section">
-            <!-- Aquí irá la gestión de productos -->
-        </section>
-        <section id="movimientosSection" class="section" style="display:none;">
-            <!-- Aquí irá el historial de movimientos -->
-        </section>
+    <main style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <img src="../inventario_bar/Imagenes/SantoSorbo_sin_fondo_nueva.png" alt="Logo del Bar" class="bienvenida-logo">
+        <h1 class="bienvenida-titulo">Bienvenido al Inventario del Bar</h1>
+        <p class="bienvenida-redirigiendo">Redirigiendo al inicio de sesión...</p>
     </main>
-    <script src="js/main.js"></script>
 </body>
 </html>
