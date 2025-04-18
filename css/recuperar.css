@@ -1,0 +1,123 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f4f4;
+    min-height: 100vh;
+}
+
+.recuperar-split-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+.recuperar-split-left {
+    flex: 1;
+    background: url('../Imagenes/botella.jpg') no-repeat center center;
+    background-size: cover;
+    min-width: 320px;
+    /* Puedes agregar un filtro para modernidad */
+    filter: brightness(0.85) saturate(1.1);
+}
+
+.recuperar-split-right {
+    flex: 1;
+    background: #9e9a9a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 320px;
+    border-radius: 0 24px 24px 0;
+    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.15);
+}
+
+.recuperar-formulario {
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100% ;
+    max-width: 380px;
+    min-width: 340px;
+    box-sizing: border-box;
+    gap: 1.3em;
+}
+
+.recuperar-titulo {
+    font-size: 1.25em;
+    color: #222;
+    gap: 1.8em;
+    text-align: center;
+    font-weight: 600;
+}
+
+.recuperar-input {
+    width: 100%;
+    padding: 0.9em 1em;
+    border: 1.5px solid #bdbdbd;
+    border-radius: 25px;
+    background: #f9f9f9;
+    font-size: 1em;
+    gap: 1.2em;
+    outline: none;
+    transition: border 0.2s;
+    box-sizing: border-box;
+}
+
+.recuperar-input:focus {
+    border: 1.5px solid #FFD600;
+}
+
+.recuperar-btn {
+    width: 100%;
+    padding: 1em;
+    background: #FFD600;
+    color: #222;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: background 0.2s, color 0.2s, transform 0.1s;
+    letter-spacing: 1px;
+    gap: 1.1em;
+}
+
+.recuperar-btn:hover {
+    background: #ffea80;
+    color: #111;
+    transform: translateY(-2px) scale(1.03);
+}
+
+.volver-btn {
+    gap: 0em;
+    background: #FFD600;
+}
+
+.recuperar-info {
+    font-size: 0.97em;
+    color: #444;
+    text-align: center;
+    gap: 1.2em 0 0.7em 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+    .recuperar-split-container {
+        flex-direction: column;
+    }
+    .recuperar-split-left, .recuperar-split-right {
+        min-width: 0;
+        width: 100vw;
+        border-radius: 0;
+    }
+    .recuperar-formulario {
+        border-radius: 0 0 24px 24px;
+        max-width: 95vw;
+    }
+}

@@ -3,29 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Recuperar contraseña - Santo Sorbo</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/recuperar.css">
 </head>
 <body>
-    <div class="recuperar-container">
-        <div class="recuperar-left"></div>
+    <div class="recuperar-split-container">
+        <div class="recuperar-split-left"></div>
 
-        <div class="recuperar-right">
-            <form class="recuperar-form">
-                <h2 class="recuperar-titulo">Porfavor ingrese su cuenta o su correo</h2>
-
-                <div class="recuperar-borde-azul">
-                    <input 
-                        type="text" 
-                        class="recuperar-input" 
-                        placeholder="Ingrese su cuenta o usuario" 
-                        required
-                    >
-                    <button type="submit" class="recuperar-btn">RECUPERAR</button>
-                </div>
-
+        <div class="recuperar-split-right">
+            <form class="recuperar-formulario">
+                <h2 class="recuperar-titulo">Por favor, ingrese su cuenta o su correo</h2>
+                <input 
+                    type="text" 
+                    class="recuperar-input" 
+                    placeholder="Ingrese su cuenta o usuario" 
+                    required
+                >
+                <button type="submit" class="recuperar-btn">RECUPERAR</button>
                 <p class="recuperar-info">
-                    Al dar recuperar y si cuenta esta registrada, se le mandara un link de recuperación a su correo
+                    Al dar recuperar, si la cuenta está registrada, se le mandará un link de recuperación a su correo.
                 </p>
+                <button type="button" class="recuperar-btn volver-btn" onclick="window.location.href='login.html'">
+                    &lt; VOLVER
+                </button>
             </form>
         </div>
     </div>

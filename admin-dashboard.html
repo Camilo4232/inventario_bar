@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Inventario Bar</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-bg admin-dashboard">
+  <div class="dashboard-overlay">
+    <div class="dashboard-menu">
+      <button class="menu-btn" id="btn-producto">PRODUCTO</button>
+      <button class="menu-btn">INGRESO Y SALIDA</button>
+      <button class="menu-btn">PROVEEDOR</button>
+      <button class="menu-btn">REPORTES</button>
+    </div>
+    <div class="dashboard-user">
+      <div class="user-info">
+        <p id="user-name"></p>
+        <p id="login-date"></p>
+      </div>
+      <div class="user-icon">
+        <img src="../inventario_bar/Imagenes/foto_usuario.png" alt="Usuario">
+      </div>
+    </div>
+    <button id="logoutBtn" class="logout-btn">CERRAR SESIÓN</button>
+  </div>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
