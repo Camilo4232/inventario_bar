@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos - Inventario Bar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="css/productos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="productos-bg">
+    <div class="productos-overlay">
+        <h2 class="productos-titulo">Lista de Productos</h2>
+        <div class="botones-superiores admin-only">
+            <button id="editarBtn" class="btn-amarillo">Editar</button>
+            <button id="eliminarBtn" class="btn-rojo">Eliminar</button>
+            <button id="agregarProductoBtn" class="btn-amarillo">+ Agregar producto</button>
+        </div>
+        <div class="tabla-contenedor">
+            <table class="productos-tabla">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Proveedor</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="productos-tbody">
+                    <!-- Aquí se insertan los productos por JS -->
+                </tbody>
+            </table>
+        </div>
+        <button id="volverBtn" class="btn-volver">Volver</button>
+    </div>
+    <!-- Modal para agregar producto -->
+<div id="modalProducto" class="modal-producto" aria-hidden="true">
+    <div class="modal-contenido">
+      <h3 class="modal-titulo">Registrar nuevo producto</h3>
+      <form id="formProducto" autocomplete="off">
+        <div class="form-group">
+          <label for="nombreProducto" class="sr-only">Nombre</label>
+          <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre" required autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="descripcionProducto" class="sr-only">Descripción</label>
+          <textarea id="descripcionProducto" name="descripcion" placeholder="Descripción" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="proveedorProducto" class="sr-only">Proveedor</label>
+          <input type="text" id="proveedorProducto" name="proveedor" placeholder="Proveedor" required autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="cantidadProducto" class="sr-only">Cantidad</label>
+          <input type="number" id="cantidadProducto" name="cantidad" placeholder="Cantidad" min="1" required />
+        </div>
+        <div class="form-group">
+          <label for="estadoProducto" class="sr-only">Estado</label>
+          <select id="estadoProducto" name="estado" required>
+            <option value="">Selecciona estado</option>
+            <option value="activo">Activo</option>
+            <option value="espera">Espera</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+        <div class="modal-botones">
+          <button type="submit" class="btn-amarillo">Guardar</button>
+          <button type="button" class="btn-gris" id="cancelarModalBtn">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Notificación flotante -->
+  <div id="notificacion" class="notificacion"></div>
+
+    <script src="js/productos.js"></script>
+</body>
+</html>

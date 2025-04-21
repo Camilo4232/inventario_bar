@@ -28,4 +28,10 @@
         localStorage.clear();
         window.location.href = 'login.html';
     });
+
+    // Redirección al módulo de productos
+    document.getElementById('btn-producto').addEventListener('click', () => {
+        window.location.href = 'productos.html';
+    });
+
 })();
