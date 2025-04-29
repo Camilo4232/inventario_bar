@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Proveedores - Inventario Bar</title>
+  <link rel="stylesheet" href="css/productos.css">
+</head>
+<body class="productos-bg">
+
+  <div class="productos-overlay">
+    <h2 class="productos-titulo">Proveedores</h2>
+    <div class="botones-superiores admin-only">
+      <button id="agregarProveedorBtn" class="btn-amarillo">+ Agregar Proveedor</button>
+    </div>
+    <div class="tabla-contenedor">
+      <table class="productos-tabla">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody id="proveedores-tbody">
+          <!-- Se llena con JS -->
+        </tbody>
+      </table>
+    </div>
+    <button id="volverBtn" class="btn-volver">Volver</button>
+  </div>
+
+  <!-- Modal Proveedor -->
+  <div id="modalProveedor" class="modal-producto" aria-hidden="true">
+    <div class="modal-contenido">
+      <h3 class="modal-titulo">Registrar Proveedor</h3>
+      <form id="formProveedor">
+        <div class="form-group">
+          <input type="text" id="nombreProveedor" name="nombre" placeholder="Nombre" required/>
+        </div>
+        <div class="form-group">
+          <input type="tel" id="telefonoProveedor" name="telefono" placeholder="Teléfono" required/>
+        </div>
+        <div class="form-group">
+          <input type="email" id="emailProveedor" name="email" placeholder="Email" required/>
+        </div>
+        <div class="modal-botones">
+          <button type="submit" class="btn-amarillo">Guardar</button>
+          <button type="button" class="btn-gris" id="cancelarProveedorBtn">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script src="js/proveedor.js"></script>
+</body>
+</html>

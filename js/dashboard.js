@@ -13,6 +13,21 @@
         return;
     }
 
+    // Redirección al módulo de ingreso y salida
+    document.getElementById('btn-entradas-salidas').addEventListener('click', () => {
+        window.location.href = 'entradas_salidas.html';
+    });
+
+    // Redirección al módulo de proveedor
+    document.getElementById('btn-proveedor').addEventListener('click', () => {
+        window.location.href = 'proveedor.html';
+    });
+
+    // Redirección al módulo de reportes
+    document.getElementById('btn-reportes').addEventListener('click', () => {
+    window.location.href = 'reportes.html';
+    });
+
     // Mostrar nombre y fecha
     const nombre = usuario;
     const fecha = new Date();

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Entradas y Salidas - Inventario Bar</title>
+  
+  <link rel="stylesheet" href="css/productos.css">
+
+</head>
+<body class="productos-bg">
+  
+  <div class="productos-overlay">
+    <h2 class="productos-titulo">Entradas y Salidas</h2>
+    <div class="botones-superiores admin-only">
+      <button id="agregarMovimientoBtn" class="btn-amarillo">+ Nuevo Movimiento</button>
+    </div>
+    <div class="tabla-contenedor">
+      <table class="productos-tabla">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Tipo Movimiento</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="movimientos-tbody">
+          <!-- Se llena con JS -->
+        </tbody>
+      </table>
+    </div>
+    <button id="volverBtn" class="btn-volver">Volver</button>
+  </div>
+
+  <!-- Modal Movimiento -->
+  <div id="modalMovimiento" class="modal-producto" aria-hidden="true">
+    <div class="modal-contenido">
+      <h3 class="modal-titulo">Registrar Movimiento</h3>
+      <form id="formMovimiento">
+        <div class="form-group">
+          <input type="text" id="productoMovimiento" name="producto" placeholder="Producto" required/>
+        </div>
+        <div class="form-group">
+          <select id="tipoMovimiento" name="tipo" required>
+            <option value="">Tipo</option>
+            <option value="Entrada">Entrada</option>
+            <option value="Salida">Salida</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="number" id="cantidadMovimiento" name="cantidad" placeholder="Cantidad" min="1" required/>
+        </div>
+        <div class="modal-botones">
+          <button type="submit" class="btn-amarillo">Guardar</button>
+          <button type="button" class="btn-gris" id="cancelarMovimientoBtn">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="js/entradas_salidas.js"></script>
+</body>
+</html>
