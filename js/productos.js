@@ -1,206 +1,181 @@
-// Obtener el rol del usuario
-const rol = localStorage.getItem('rol');
-
-// Redirección si no hay sesión
-if (!rol) {
-    window.location.href = 'login.html';
-}
-
-// Variables globales
-let modoEdicion = false;
-let idProductoEditando = null;
-
-// Obtener los productos desde localStorage o usar los productos de ejemplo
-let productosEjemplo = JSON.parse(localStorage.getItem('productos')) || [
-    { id: 1, nombre: "Ron Añejo", descripcion: "Botella 750ml", cantidad: 20, proveedor: "Ron S.A.", estado: "Disponible" },
-    { id: 2, nombre: "Cerveza Artesanal", descripcion: "Pack 6 botellas", cantidad: 15, proveedor: "Cervecería Bar", estado: "Disponible" },
-    { id: 3, nombre: "Tequila", descripcion: "Botella 1L", cantidad: 8, proveedor: "Tequila MX", estado: "Bajo stock" },
-    { id: 4, nombre: "Whisky", descripcion: "Botella 700ml", cantidad: 0, proveedor: "Whisky Import", estado: "Agotado" }
-];
-
-// Inicializar contador de ID si no existe
-if (!localStorage.getItem('productoIdCounter')) {
-    localStorage.setItem('productoIdCounter', 4);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    ajustarVisibilidadPorRol();
-    renderizarProductos();
+    const proveedorSelect = document.getElementById('proveedorProducto');
+    const agregarProductoBtn = document.getElementById('agregarProductoBtn');
+    const modalProducto = document.getElementById('modalProducto');
+    const cancelarModalBtn = document.getElementById('cancelarModalBtn');
+    const formProducto = document.getElementById('formProducto');
+    const lista = document.getElementById('listaProductos');
 
-    const modal = document.getElementById('modalProducto');
-    const form = document.getElementById('formProducto');
-    const btnAgregar = document.getElementById('agregarProductoBtn');
-    const btnCancelar = document.getElementById('cancelarModalBtn');
-    const notificacion = document.getElementById('notificacion');
-
-    // Botón volver
-    document.getElementById('volverBtn').addEventListener('click', () => {
-        if (rol === 'Administrador') {
-            window.location.href = 'admin-dashboard.html';
-        } else {
-            window.location.href = 'empleado-dashboard.html';
-        }
-    });
-
-    // Abrir modal
-    if (btnAgregar) {
-        btnAgregar.addEventListener('click', () => {
-            modoEdicion = false;
-            form.reset();
-            abrirModal();
-        });
+    // Cargar proveedores en el combo box
+    function cargarProveedores() {
+        fetch('listar_proveedores.php')
+            .then(response => response.json())
+            .then(proveedores => {
+                proveedorSelect.innerHTML = '<option value="">Selecciona proveedor</option>';
+                proveedores.forEach(proveedor => {
+                    const option = document.createElement('option');
+                    option.value = proveedor.id;
+                    option.textContent = proveedor.nombre;
+                    proveedorSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error al cargar proveedores:', error));
     }
 
-    // Cerrar modal
-    btnCancelar.addEventListener('click', cerrarModal);
+    // Abrir modal para agregar producto
+    function abrirModal() {
+        modalProducto.style.display = 'block';
+        formProducto.reset();
+        cargarProveedores();
+        const idInput = document.getElementById('productoId');
+        if (idInput) idInput.remove();
+    }
 
-    // Cerrar modal con tecla Esc
-    window.addEventListener('keydown', (e) => {
-        if (modal.classList.contains('activo') && e.key === 'Escape') {
-            cerrarModal();
+    // Cargar productos desde la base de datos
+    function cargarProductos() {
+        fetch('listar_productos.php')
+            .then(response => response.json())
+            .then(productos => {
+                lista.innerHTML = '';
+                const formatoPrecio = new Intl.NumberFormat('es-CO', {
+                    style: 'decimal',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+
+                productos.forEach(producto => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${producto.nombre}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>${producto.cantidad_en_stock}</td>
+                        <td>${producto.proveedor_nombre}</td>
+                        <td>${producto.estado}</td>
+                        <td>${formatoPrecio.format(producto.precio)}</td>
+                        <td>
+                            <button class="btn-editar" data-id="${producto.id}">Editar</button>
+                            <button class="btn-eliminar" data-id="${producto.id}">Eliminar</button>
+                        </td>
+                    `;
+                    lista.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error al cargar productos:', error));
+    }
+
+    // Obtener datos de producto y abrir modal para editar
+    function editarProducto(id) {
+        fetch(`editar_producto.php?id=${id}`)
+            .then(response => response.json())
+            .then(producto => {
+                document.getElementById('nombreProducto').value = producto.nombre;
+                document.getElementById('descripcionProducto').value = producto.descripcion;
+                document.getElementById('cantidadProducto').value = producto.cantidad_en_stock;
+                document.getElementById('estadoProducto').value = producto.estado;
+                document.getElementById('proveedorProducto').value = producto.proveedor;
+
+                const formatoPrecio = new Intl.NumberFormat('es-CO', {
+                    style: 'decimal',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+                document.getElementById('precioProducto').value = formatoPrecio.format(producto.precio);
+
+                let inputId = document.getElementById('productoId');
+                if (!inputId) {
+                    inputId = document.createElement('input');
+                    inputId.type = 'hidden';
+                    inputId.id = 'productoId';
+                    inputId.name = 'id';
+                    formProducto.appendChild(inputId);
+                }
+                inputId.value = producto.id;
+
+                modalProducto.style.display = 'block';
+            });
+    }
+
+    // Eliminar producto
+    function eliminarProducto(id) {
+        if (confirm("¿Estás seguro de eliminar este producto?")) {
+            fetch('eliminar_producto.php', {
+                method: 'POST',
+                body: new URLSearchParams({ id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Producto eliminado correctamente");
+                    cargarProductos();
+                } else {
+                    alert("Error al eliminar el producto");
+                }
+            });
+        }
+    }
+
+    // Manejar clicks de editar/eliminar (solo se asigna una vez)
+    lista.addEventListener('click', (event) => {
+        if (event.target.classList.contains('btn-editar')) {
+            const id = event.target.getAttribute('data-id');
+            editarProducto(id);
+        }
+        if (event.target.classList.contains('btn-eliminar')) {
+            const id = event.target.getAttribute('data-id');
+            eliminarProducto(id);
         }
     });
 
-    // Guardar producto (nuevo o editado)
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
+    // Guardar producto
+    formProducto.addEventListener('submit', (event) => {
+        event.preventDefault();
 
-        const nombre = form.nombre.value.trim();
-        const descripcion = form.descripcion.value.trim();
-        const proveedor = form.proveedor.value.trim();
-        const cantidad = parseInt(form.cantidad.value, 10);
-        const estado = form.estado.value;
-
-        if (!nombre || !descripcion || !proveedor || isNaN(cantidad) || cantidad < 1 || !estado) {
-            mostrarNotificacion('Por favor, completa todos los campos correctamente.');
+        const proveedorSeleccionado = proveedorSelect.value;
+        if (!proveedorSeleccionado) {
+            alert('Por favor selecciona un proveedor');
             return;
         }
 
-        if (modoEdicion) {
-            // Editar producto existente
-            const producto = productosEjemplo.find(p => p.id === idProductoEditando);
-            if (producto) {
-                producto.nombre = nombre;
-                producto.descripcion = descripcion;
-                producto.cantidad = cantidad;
-                producto.proveedor = proveedor;
-                producto.estado = estado;
-                mostrarNotificacion('¡Producto editado correctamente!');
-            }
-        } else {
-            // Agregar nuevo producto
-            let productoIdCounter = parseInt(localStorage.getItem('productoIdCounter'), 10);
-            const id = productoIdCounter + 1;
-            localStorage.setItem('productoIdCounter', id);
+        const precioInput = document.getElementById('precioProducto').value;
+        const precioLimpio = parseFloat(precioInput.replace(/\./g, '').replace(',', '.'));
 
-            const nuevoProducto = { id, nombre, descripcion, cantidad, proveedor, estado };
-            productosEjemplo.push(nuevoProducto);
-            mostrarNotificacion('¡Producto guardado correctamente!');
+        if (isNaN(precioLimpio)) {
+            alert('El precio ingresado no es válido');
+            return;
         }
 
-        guardarProductos();
-        renderizarProductos();
-        cerrarModal();
+        const formData = new FormData(formProducto);
+        formData.set('proveedor', proveedorSeleccionado);
+        formData.set('precio', precioLimpio);
+
+        const url = formData.has('id') ? 'actualizar_producto.php' : 'guardar_producto.php';
+
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Producto guardado correctamente');
+                cargarProductos();
+                modalProducto.style.display = 'none';
+            } else {
+                alert('Error al guardar el producto');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
 
-    // Funciones internas
+    cancelarModalBtn.addEventListener('click', () => {
+        modalProducto.style.display = 'none';
+    });
 
-    function abrirModal() {
-        modal.classList.add('activo');
-        modal.setAttribute('aria-hidden', 'false');
-        setTimeout(() => {
-            document.getElementById('nombreProducto').focus();
-        }, 100);
+    // Inicialización
+    if (agregarProductoBtn) {
+        agregarProductoBtn.addEventListener('click', abrirModal);
     }
 
-    function cerrarModal() {
-        form.reset();
-        modal.classList.remove('activo');
-        modal.setAttribute('aria-hidden', 'true');
-        modoEdicion = false;
-        idProductoEditando = null;
-    }
-
-    function mostrarNotificacion(mensaje) {
-        notificacion.textContent = mensaje;
-        notificacion.style.display = 'block';
-        setTimeout(() => {
-            notificacion.style.display = 'none';
-        }, 2000);
-    }
-
-    function ajustarVisibilidadPorRol() {
-        const adminElements = document.querySelectorAll('.admin-only');
-        adminElements.forEach(el => {
-            el.style.display = (rol === 'Administrador') ? '' : 'none';
-        });
-    }
-
-    function renderizarProductos() {
-        const tbody = document.getElementById('productos-tbody');
-        tbody.innerHTML = '';
-
-        productosEjemplo.forEach(producto => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${producto.id}</td>
-                <td>${producto.nombre}</td>
-                <td>${producto.descripcion}</td>
-                <td>${producto.cantidad}</td>
-                <td>${producto.proveedor}</td>
-                <td>${producto.estado}</td>
-                <td>
-                    <button class="editarBtn admin-only" data-id="${producto.id}" style="background-color: yellow;">Editar</button>
-                    <button class="eliminarBtn admin-only" data-id="${producto.id}" style="background-color: red; color: white;">Eliminar</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        document.querySelectorAll('.editarBtn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                prepararEdicion(id);
-            });
-        });
-
-        document.querySelectorAll('.eliminarBtn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                eliminarProducto(id);
-            });
-        });
-
-        ajustarVisibilidadPorRol();
-    }
-
-    function prepararEdicion(id) {
-        const producto = productosEjemplo.find(p => p.id === id);
-        if (producto) {
-            form.nombre.value = producto.nombre;
-            form.descripcion.value = producto.descripcion;
-            form.cantidad.value = producto.cantidad;
-            form.proveedor.value = producto.proveedor;
-            form.estado.value = producto.estado;
-
-            modoEdicion = true;
-            idProductoEditando = id;
-            abrirModal();
-        }
-    }
-
-    function eliminarProducto(id) {
-        productosEjemplo = productosEjemplo.filter(producto => producto.id !== id);
-        guardarProductos();
-        renderizarProductos();
-        mostrarNotificacion('Producto eliminado correctamente');
-    }
-
-    function guardarProductos() {
-        localStorage.setItem('productos', JSON.stringify(productosEjemplo));
-    }
-
+    cargarProveedores();
+    cargarProductos();
 });
-
-
-

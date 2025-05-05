@@ -26,6 +26,27 @@
     </div>
     <button id="logoutBtn" class="logout-btn">CERRAR SESIÓN</button>
   </div>
-  <script src="js/dashboard.js"></script>
+  <script src="js/dashboard.js?v=1.0" defer></script>
+  <!-- al final del body -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const usuario = localStorage.getItem('usuario');
+    const rol = localStorage.getItem('rol');
+
+    console.log('Usuario en localStorage:', usuario);
+    console.log('Rol en localStorage:', rol);
+
+    if (!usuario || !rol) {
+      console.warn('Sesión no válida. Redirigiendo...');
+      window.location.href = 'login.html';
+    } else {
+      console.log('Sesión válida. Mostrando dashboard...');
+      const nombreUsuario = document.getElementById('user-name');
+      if (nombreUsuario) {
+        nombreUsuario.textContent = usuario;
+      }
+    }
+  });
+</script>
 </body>
 </html>

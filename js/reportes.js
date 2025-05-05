@@ -6,30 +6,48 @@ if (!rol) {
 document.addEventListener('DOMContentLoaded', () => {
     const tbody = document.getElementById('reportes-tbody');
 
-    // Simulación de reportes, puedes conectarlo después a movimientos reales
-    const reportes = [
-        { producto: 'Cerveza', movimientos: 15, stock: 30 },
-        { producto: 'Ron', movimientos: 10, stock: 20 },
-        { producto: 'Whisky', movimientos: 5, stock: 12 },
-    ];
-
-    function renderizarReportes() {
-        tbody.innerHTML = '';
-        reportes.forEach((rep, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${rep.producto}</td>
-                <td>${rep.movimientos}</td>
-                <td>${rep.stock}</td>
-            `;
-            tbody.appendChild(tr);
-        });
+    async function cargarReportes() {
+        try {
+            const res = await fetch('php2/listar_inventario.php');
+            const datos = await res.json();
+            
+            console.log("Datos recibidos:", datos); // Verifica los datos recibidos
+    
+            if (datos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No hay datos disponibles.</td></tr>';
+                return;
+            }
+    
+            // Depura lo que se está agregando al DOM
+            tbody.innerHTML = '';
+            datos.forEach((item) => {
+                console.log("Renderizando producto:", item); // Verifica cada item
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.producto}</td>
+                    <td>${item.stock}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Error al cargar reportes:', error);
+            tbody.innerHTML = '<tr><td colspan="3">Error al cargar los datos.</td></tr>';
+        }
     }
 
-    renderizarReportes();
-
-    document.getElementById('volverBtn').addEventListener('click', () => {
-        window.location.href = rol === 'Administrador' ? 'admin-dashboard.html' : 'empleado-dashboard.html';
+    const volverBtn = document.getElementById('volverBtn');
+    volverBtn.addEventListener('click', () => {
+    const rol = localStorage.getItem('rol');
+    if (rol === 'administrador') {
+        window.location.href = 'admin-dashboard.html';
+    } else if (rol === 'empleado') {
+        window.location.href = 'empleado-dashboard.html';
+    } else {
+        window.location.href = 'login.html';
+    }
     });
+
+    cargarReportes();
 });
+
+

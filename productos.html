@@ -6,73 +6,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/productos.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .btn-editar {
+            background-color: #facc15 !important;
+            color: black !important;
+        }
+        
+        .btn-eliminar {
+            background-color: #ef4444 !important;
+            color: white !important;
+        }
+        </style>
 </head>
 <body class="productos-bg">
     <div class="productos-overlay">
         <h2 class="productos-titulo">Lista de Productos</h2>
         <div class="botones-superiores admin-only">
-            <button id="agregarProductoBtn" class="btn-amarillo">+ Agregar producto</button>
+          <button id="agregarProductoBtn" class="btn-amarillo">+ Agregar producto</button>
         </div>
         <div class="tabla-contenedor">
             <table class="productos-tabla">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Cantidad</th>
                         <th>Proveedor</th>
                         <th>Estado</th>
+                        <th>Precio</th>
+                        <th>Acciones</th> <!-- 👈 nueva columna para botones -->
                     </tr>
                 </thead>
-                <tbody id="productos-tbody">
+                
+                <tbody id="listaProductos">
                     <!-- Aquí se insertan los productos por JS -->
                 </tbody>
             </table>
         </div>
-        <button id="volverBtn" class="btn-volver">Volver</button>
+        <button id="volverBtn" class="btn-volver" onclick="history.back()">Volver</button>
     </div>
-    <!-- Modal para agregar producto -->
+
+ <!-- Modal para agregar producto -->
 <div id="modalProducto" class="modal-producto" aria-hidden="true">
-    <div class="modal-contenido">
+  <div class="modal-contenido">
       <h3 class="modal-titulo">Registrar nuevo producto</h3>
       <form id="formProducto" autocomplete="off">
         <div class="form-group">
-          <label for="nombreProducto" class="sr-only">Nombre</label>
-          <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre" required autocomplete="off" />
+            <label for="nombreProducto" class="sr-only">Nombre</label>
+            <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre" required autocomplete="off" />
         </div>
         <div class="form-group">
-          <label for="descripcionProducto" class="sr-only">Descripción</label>
-          <textarea id="descripcionProducto" name="descripcion" placeholder="Descripción" required></textarea>
+            <label for="descripcionProducto" class="sr-only">Descripción</label>
+            <textarea id="descripcionProducto" name="descripcion" placeholder="Descripción" required></textarea>
         </div>
         <div class="form-group">
-          <label for="proveedorProducto" class="sr-only">Proveedor</label>
-          <input type="text" id="proveedorProducto" name="proveedor" placeholder="Proveedor" required autocomplete="off" />
+            <label for="precioProducto" class="sr-only">Precio</label>
+            <input type="text" id="precioProducto" name="precio" placeholder="precio" required>
         </div>
         <div class="form-group">
-          <label for="cantidadProducto" class="sr-only">Cantidad</label>
-          <input type="number" id="cantidadProducto" name="cantidad" placeholder="Cantidad" min="1" required />
+            <label for="proveedorProducto">Proveedor</label>
+            <select id="proveedorProducto" name="proveedor" required>
+                <option value="">Selecciona un proveedor</option>
+            </select>
         </div>
         <div class="form-group">
-          <label for="estadoProducto" class="sr-only">Estado</label>
-          <select id="estadoProducto" name="estado" required>
-            <option value="">Selecciona estado</option>
-            <option value="activo">Activo</option>
-            <option value="espera">Espera</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
+            <label for="cantidadProducto" class="sr-only">Cantidad</label>
+            <input type="number" id="cantidadProducto" name="cantidad" placeholder="Cantidad" min="1" required />
+        </div>
+        <div class="form-group">
+            <label for="estadoProducto" class="sr-only">Estado</label>
+            <select id="estadoProducto" name="estado" required>
+                <option value="">Selecciona estado</option>
+                <option value="activo">Activo</option>
+                <option value="espera">Espera</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
         </div>
         <div class="modal-botones">
-          <button type="submit" class="btn-amarillo">Guardar</button>
-          <button type="button" class="btn-gris" id="cancelarModalBtn">Cancelar</button>
+            <button type="submit" class="btn-amarillo">Guardar</button>
+            <button type="button" class="btn-gris" id="cancelarModalBtn">Cancelar</button>
         </div>
-      </form>
-    </div>
+    </form>    
   </div>
-  
-  <!-- Notificación flotante -->
-  <div id="notificacion" class="notificacion"></div>
+</div>
+
+    <div id="notificacion" class="notificacion"></div>
 
     <script src="js/productos.js"></script>
 </body>
 </html>
+
+

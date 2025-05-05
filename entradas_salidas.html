@@ -31,6 +31,7 @@
       </table>
     </div>
     <button id="volverBtn" class="btn-volver">Volver</button>
+
   </div>
 
   <!-- Modal Movimiento -->
@@ -39,7 +40,9 @@
       <h3 class="modal-titulo">Registrar Movimiento</h3>
       <form id="formMovimiento">
         <div class="form-group">
-          <input type="text" id="productoMovimiento" name="producto" placeholder="Producto" required/>
+          <select id="productoMovimiento" name="producto" required>
+            <option value="">Seleccione un producto</option>
+          </select>                    
         </div>
         <div class="form-group">
           <select id="tipoMovimiento" name="tipo" required>

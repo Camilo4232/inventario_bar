@@ -1,8 +1,3 @@
-const rol = localStorage.getItem('rol');
-if (!rol) {
-    window.location.href = 'login.html';
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modalMovimiento');
     const form = document.getElementById('formMovimiento');
@@ -10,114 +5,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCancelar = document.getElementById('cancelarMovimientoBtn');
     const tbody = document.getElementById('movimientos-tbody');
 
-    const movimientos = [];
+    const cargarMovimientos = async () => {
+        const res = await fetch('php2/listar_movimientos.php');
+        const movimientos = await res.json();
 
-    // Función para renderizar movimientos en la tabla
-    function renderizarMovimientos() {
         tbody.innerHTML = '';
-        movimientos.forEach((mov, index) => {
+        movimientos.forEach((mov, i) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${index + 1}</td>
+                <td>${i + 1}</td>
                 <td>${mov.producto}</td>
                 <td>${mov.tipo}</td>
                 <td>${mov.cantidad}</td>
                 <td>${mov.fecha}</td>
-                <td>
-                    <button class="btn-amarillo editar-btn" data-index="${index}">Editar</button>
-                    <button class="btn-rojo eliminar-btn" data-index="${index}">Eliminar</button>
-                </td>
             `;
             tbody.appendChild(tr);
         });
+    };
+    const cargarProductos = async () => {
+        const res = await fetch('php2/listar_productos.php'); // ahora lo creamos
+        const productos = await res.json();
+        const select = document.getElementById('productoMovimiento');
+        productos.forEach(prod => {
+            const option = document.createElement('option');
+            option.value = prod.nombre;
+            option.textContent = prod.nombre;
+            select.appendChild(option);
+        });
+    };
+    
 
-        // Agregar eventos para los botones de editar y eliminar
-        document.querySelectorAll('.editar-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const index = e.target.dataset.index;
-                editarMovimiento(index);
-            });
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const datos = new FormData(form);
+
+        await fetch('php2/guardar_movimiento.php', {
+            method: 'POST',
+            body: datos
         });
 
-        document.querySelectorAll('.eliminar-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const index = e.target.dataset.index;
-                eliminarMovimiento(index);
-            });
-        });
-    }
-
-    // Mostrar el modal para agregar nuevo movimiento
-    btnAgregar.addEventListener('click', () => {
-        modal.classList.add('activo');
-        // Configurar el formulario para agregar
-        form.onsubmit = (e) => {
-            e.preventDefault();
-            const nuevoMov = {
-                producto: form.producto.value.trim(),
-                tipo: form.tipo.value,
-                cantidad: form.cantidad.value,
-                fecha: new Date().toLocaleDateString('es-ES')
-            };
-            movimientos.push(nuevoMov);
-            renderizarMovimientos();
-            form.reset();
-            modal.classList.remove('activo');
-        };
+        form.reset();
+        modal.classList.remove('activo');
+        cargarMovimientos();
     });
 
-    // Cancelar la operación y cerrar el modal
+    btnAgregar.addEventListener('click', () => modal.classList.add('activo'));
     btnCancelar.addEventListener('click', () => {
         modal.classList.remove('activo');
         form.reset();
     });
 
-    // Función para editar un movimiento
-    function editarMovimiento(index) {
-        const movimiento = movimientos[index];
-        form.producto.value = movimiento.producto;
-        form.tipo.value = movimiento.tipo;
-        form.cantidad.value = movimiento.cantidad;
-
-        modal.classList.add('activo');
-
-        // Configurar el formulario para editar
-        form.onsubmit = (e) => {
-            e.preventDefault();
-            movimiento.producto = form.producto.value.trim();
-            movimiento.tipo = form.tipo.value;
-            movimiento.cantidad = form.cantidad.value;
-            movimiento.fecha = new Date().toLocaleDateString('es-ES');
-            renderizarMovimientos();
-            form.reset();
-            modal.classList.remove('activo');
-            // Restaurar el comportamiento para agregar
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                const nuevoMov = {
-                    producto: form.producto.value.trim(),
-                    tipo: form.tipo.value,
-                    cantidad: form.cantidad.value,
-                    fecha: new Date().toLocaleDateString('es-ES')
-                };
-                movimientos.push(nuevoMov);
-                renderizarMovimientos();
-                form.reset();
-                modal.classList.remove('activo');
-            };
-        };
+        const volverBtn = document.getElementById('volverBtn');
+    volverBtn.addEventListener('click', () => {
+    const rol = localStorage.getItem('rol');
+    if (rol === 'administrador') {
+        window.location.href = 'admin-dashboard.html';
+    } else if (rol === 'empleado') {
+        window.location.href = 'empleado-dashboard.html';
+    } else {
+        window.location.href = 'login.html';
     }
+    });
 
-    // Función para eliminar un movimiento
-    function eliminarMovimiento(index) {
-        if (confirm('¿Estás seguro de eliminar este movimiento?')) {
-            movimientos.splice(index, 1);
-            renderizarMovimientos();
-        }
-    }
-        // Volver a la página principal
-        document.getElementById('volverBtn').addEventListener('click', () => {
-            window.location.href = rol === 'Administrador' ? 'admin-dashboard.html' : 'empleado-dashboard.html';
-        });
+    
+    cargarMovimientos();
+    cargarProductos();
 });
+
 
