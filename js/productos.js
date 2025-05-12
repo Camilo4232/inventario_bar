@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     tr.innerHTML = `
                         <td>${producto.nombre}</td>
                         <td>${producto.descripcion}</td>
-                        <td>${producto.cantidad_en_stock}</td>
                         <td>${producto.proveedor_nombre}</td>
                         <td>${producto.estado}</td>
                         <td>${formatoPrecio.format(producto.precio)}</td>
@@ -70,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(producto => {
                 document.getElementById('nombreProducto').value = producto.nombre;
                 document.getElementById('descripcionProducto').value = producto.descripcion;
-                document.getElementById('cantidadProducto').value = producto.cantidad_en_stock;
                 document.getElementById('estadoProducto').value = producto.estado;
                 document.getElementById('proveedorProducto').value = producto.proveedor;
 

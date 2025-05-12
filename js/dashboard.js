@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const rol = localStorage.getItem('rol')?.toLowerCase();
     const isAdmin = document.body.classList.contains('admin-dashboard');
     const isEmpleado = document.body.classList.contains('empleado-dashboard');
+    const btnVentas = document.getElementById('btn-ventas');
+    if (btnVentas) {
+      btnVentas.addEventListener('click', () => {
+        console.log('Botón de ventas presionado');
+        window.location.href = 'ventas.html';
+      });
+    }
 
     if (!usuario || (!isAdmin && !isEmpleado) ||
         (isAdmin && rol !== 'administrador') ||

@@ -1,7 +1,7 @@
 <?php
 include 'conexion.php';
 
-$sql = "SELECT p.id, p.nombre, p.descripcion, p.precio, p.cantidad_en_stock, p.estado, pr.nombre AS proveedor_nombre
+$sql = "SELECT p.id, p.nombre, p.descripcion, pr.nombre AS proveedor_nombre, p.estado, p.precio
         FROM producto p
         JOIN proveedor pr ON p.proveedor = pr.id";
 
@@ -15,4 +15,5 @@ while ($row = $result->fetch_assoc()) {
 
 echo json_encode($productos);
 ?>
+
 
