@@ -1,27 +1,32 @@
 <?php
-include 'conexion.php';
+header('Content-Type: application/json');
 
-// Recibir datos del producto
+$conexion = new mysqli("localhost", "root", "", "sistemainventario");
+$conexion->set_charset("utf8");
+
 $nombre = $_POST['nombre'];
-$descripcion = $_POST['descripcion'];
 $precio = $_POST['precio'];
-$proveedor_id = $_POST['proveedor'];
+$id_categoria = $_POST['id_categoria'];
+$proveedor = $_POST['proveedor'];
 $estado = $_POST['estado'];
 
-// Preparar la consulta SQL para insertar el producto con el proveedor y estado
-$stmt = $conexion->prepare("INSERT INTO producto (nombre, descripcion, precio, proveedor, estado) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("ssdss", $nombre, $descripcion, $precio, $proveedor_id, $estado);
+$query = "INSERT INTO producto (nombre, precio, id_categoria, proveedor, estado) 
+          VALUES ('$nombre', '$precio', '$id_categoria', '$proveedor', '$estado')";
 
-// Enviar respuesta JSON al frontend
-if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
+if ($conexion->query($query)) {
+    echo json_encode([
+    'success' => true,
+    'message' => 'Producto guardado con éxito'
+]);
 } else {
     echo json_encode([
-        'success' => false,
-        'error' => $stmt->error
-    ]);
+    'success' => false,
+    'message' => 'Error al guardar producto'
+]);
 }
 ?>
+
+
 
 
 

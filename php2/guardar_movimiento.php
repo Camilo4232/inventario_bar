@@ -1,11 +1,12 @@
 <?php
+date_default_timezone_set('America/Bogota');
 $conexion = new mysqli("localhost", "root", "", "sistemainventario");
 $conexion->set_charset("utf8");
 
 $producto = $_POST['producto'];
 $tipo = $_POST['tipo'];
 $cantidad = (int)$_POST['cantidad'];
-$fecha = date("Y-m-d");
+$fecha = date("Y-m-d H:i:s");
 
 // Obtener ID y nombre exacto del producto
 $stmt = $conexion->prepare("SELECT id, nombre FROM producto WHERE nombre = ?");

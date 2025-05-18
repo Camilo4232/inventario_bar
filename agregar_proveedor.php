@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 include 'conexion.php';  // Asegúrate de tener la conexión a la base de datos en este archivo
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

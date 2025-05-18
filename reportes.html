@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+   <meta charset="UTF-8">
   <title>Reportes de Inventario - Santo Sorbo</title>
-  <link rel="stylesheet" href="css/productos.css">
+  <link rel="stylesheet" href="css/reportes.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="productos-bg">
 
   <div class="productos-overlay">
-    <h2 class="productos-titulo">Inventario Actual</h2>
+    <h2 class="productos-titulo">Reportes de Inventario</h2>
 
+    <!-- Filtros -->
+    <div class="filtros">
+      <label>Desde: <input type="date" id="fecha-desde"></label>
+      <label>Hasta: <input type="date" id="fecha-hasta"></label>
+      <label>Producto: <select id="filtro-producto"><option value="">Todos</option></select></label>
+      <label>Categoría: <select id="filtro-categoria"><option value="">Todas</option></select></label>
+      <button id="btn-filtrar">Filtrar</button>
+      <button id="btn-pdf">Exportar PDF</button>
+    </div>
+
+    <!-- Tabla de movimientos -->
     <div class="tabla-contenedor">
       <table class="productos-tabla">
         <thead>
           <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
             <th>Producto</th>
-            <th>Stock</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
           </tr>
         </thead>
         <tbody id="reportes-tbody">
@@ -24,10 +40,16 @@
       </table>
     </div>
 
+    <!-- Resumen -->
+    <div id="resumen" class="resumen">
+      <h3>Resumen General</h3>
+      <ul id="resumen-lista"></ul>
+    </div>
+
     <button id="volverBtn" class="btn-volver">Volver</button>
   </div>
-
   <script src="js/reportes.js"></script>
 </body>
 </html>
+
 

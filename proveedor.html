@@ -2,13 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proveedores - Inventario Bar</title>
-  <link rel="stylesheet" href="css/productos.css">
+  <link rel="stylesheet" href="css/proveedor.css">
 </head>
 <body class="productos-bg">
 
   <div class="productos-overlay">
-    <h2 class="productos-titulo">Proveedores</h2>
+    <h2 class="productos-titulo">Gestión de Proveedores</h2>
     <div class="botones-superiores admin-only">
       <button id="agregarProveedorBtn" class="btn-amarillo">+ Agregar Proveedor</button>
     </div>
@@ -20,7 +21,7 @@
             <th>Nombre</th>
             <th>Teléfono</th>
             <th>Email</th>
-            <th>Acciones</th> <!-- 👈 nueva columna para botones -->
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody id="proveedores-tbody">
@@ -37,12 +38,15 @@
       <h3 class="modal-titulo">Registrar Proveedor</h3>
       <form id="formProveedor">
         <div class="form-group">
+          <label for="nombreProveedor" class="sr-only">Nombre del Proveedor</label>
           <input type="text" id="nombreProveedor" name="nombre" placeholder="Nombre" required/>
         </div>
         <div class="form-group">
+          <label for="telefonoProveedor" class="sr-only">Teléfono</label>
           <input type="tel" id="telefonoProveedor" name="telefono" placeholder="Teléfono" required/>
         </div>
         <div class="form-group">
+          <label for="emailProveedor" class="sr-only">Email</label>
           <input type="email" id="emailProveedor" name="email" placeholder="Email" required/>
         </div>
         <div class="modal-botones">
@@ -52,6 +56,8 @@
       </form>
     </div>
   </div>
+  
+  <!-- Aquí se insertarán las notificaciones dinámicamente -->
   
   <script src="js/proveedor.js"></script>
 </body>

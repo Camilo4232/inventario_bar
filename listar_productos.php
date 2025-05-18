@@ -1,19 +1,46 @@
 <?php
-include 'conexion.php';
+header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$sql = "SELECT p.id, p.nombre, p.descripcion, pr.nombre AS proveedor_nombre, p.estado, p.precio
-        FROM producto p
-        JOIN proveedor pr ON p.proveedor = pr.id";
+$conexion = new mysqli("localhost", "root", "", "sistemainventario");
+$conexion->set_charset("utf8");
 
-$result = $conexion->query($sql);
+$filtro = isset($_GET['categoria']) ? intval($_GET['categoria']) : '';
+$condicion = $filtro ? "WHERE producto.id_categoria = $filtro" : '';
+
+$query = "SELECT 
+            producto.id, 
+            producto.nombre, 
+            producto.precio, 
+            producto.estado,
+            proveedor.nombre AS proveedor_nombre,
+            categoria.nombre AS categoria_nombre 
+          FROM producto 
+          JOIN categoria ON producto.id_categoria = categoria.id
+          JOIN proveedor ON producto.proveedor = proveedor.id
+          $condicion";
+
+$resultado = $conexion->query($query);
+
+if (!$resultado) {
+    echo json_encode(['success' => false, 'error' => $conexion->error]);
+    $conexion->close();
+    exit;
+}
 
 $productos = [];
-
-while ($row = $result->fetch_assoc()) {
-    $productos[] = $row;
+while ($fila = $resultado->fetch_assoc()) {
+    $productos[] = $fila;
 }
 
 echo json_encode($productos);
+
+$conexion->close();
 ?>
+
+
+
+
 
 

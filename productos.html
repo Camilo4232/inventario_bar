@@ -6,90 +6,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/productos.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         .btn-editar {
             background-color: #facc15 !important;
             color: black !important;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
         }
         
         .btn-eliminar {
             background-color: #ef4444 !important;
             color: white !important;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
         }
-        </style>
+
+        .btn-nueva-categoria {
+            margin-top: 0.5rem;
+            background-color: #4ade80;
+            color: #000;
+            padding: 4px 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .filtro-categoria {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .filtro-categoria label {
+            margin-right: 10px;
+            color: #222;
+            font-weight: 600;
+        }
+
+        .filtro-categoria select {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #bdbdbd;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Animaciones para SweetAlert2 */
+        .swal2-popup {
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        .swal2-title {
+            font-size: 1.5rem !important;
+        }
+
+        .swal2-confirm {
+            background-color: #ffe139 !important;
+            color: #222 !important;
+            font-weight: 600 !important;
+        }
+
+        .swal2-confirm:focus {
+            box-shadow: 0 0 0 3px rgba(255, 225, 57, 0.5) !important;
+        }
+
+        .swal2-cancel {
+            background-color: #6c757d !important;
+        }
+    </style>
 </head>
 <body class="productos-bg">
     <div class="productos-overlay">
         <h2 class="productos-titulo">Lista de Productos</h2>
+        
+        <!-- Filtro por categoría -->
+        <div class="filtro-categoria">
+            <label for="filtroCategoria">Filtrar por categoría:</label>
+            <select id="filtroCategoria">
+                <option value="">Todas las categorías</option>
+            </select>
+        </div>
+
         <div class="botones-superiores admin-only">
-          <button id="agregarProductoBtn" class="btn-amarillo">+ Agregar producto</button>
+            <button id="agregarProductoBtn" class="btn-amarillo">+ Agregar producto</button>
         </div>
         <div class="tabla-contenedor">
             <table class="productos-tabla">
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Descripción</th>
-                        
+                        <th>Categoría</th>
                         <th>Proveedor</th>
                         <th>Estado</th>
                         <th>Precio</th>
-                        <th>Acciones</th> <!-- 👈 nueva columna para botones -->
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                
                 <tbody id="listaProductos">
-                    <!-- Aquí se insertan los productos por JS -->
+                    <!-- Productos generados por JS -->
                 </tbody>
             </table>
         </div>
         <button id="volverBtn" class="btn-volver" onclick="history.back()">Volver</button>
     </div>
 
- <!-- Modal para agregar producto -->
-<div id="modalProducto" class="modal-producto" aria-hidden="true">
-  <div class="modal-contenido">
-      <h3 class="modal-titulo">Registrar nuevo producto</h3>
-      <form id="formProducto" autocomplete="off">
-        <div class="form-group">
-            <label for="nombreProducto" class="sr-only">Nombre</label>
-            <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre" required autocomplete="off" />
+    <!-- Modal para agregar/editar producto -->
+    <div id="modalProducto" class="modal-producto" aria-hidden="true">
+        <div class="modal-contenido">
+            <h3 class="modal-titulo">Registrar nuevo producto</h3>
+            <form id="formProducto" autocomplete="off">
+                <div class="form-group">
+                    <label for="nombreProducto">Nombre</label>
+                    <input type="text" id="nombreProducto" name="nombre" placeholder="Nombre" required />
+                </div>
+                <div class="form-group">
+                    <label for="categoriaProducto">Categoría</label>
+                    <select id="categoriaProducto" name="id_categoria" required>
+                        <option value="">Selecciona categoría</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="precioProducto">Precio</label>
+                    <input type="number" id="precioProducto" name="precio" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="proveedorProducto">Proveedor</label>
+                    <select id="proveedorProducto" name="proveedor" required>
+                        <option value="">Selecciona un proveedor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="estadoProducto">Estado</label>
+                    <select id="estadoProducto" name="estado" required>
+                        <option value="">Selecciona estado</option>
+                        <option value="activo">Activo</option>
+                        <option value="espera">Espera</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <div class="modal-botones">
+                    <button type="submit" class="btn-amarillo">Guardar</button>
+                    <button type="button" class="btn-gris" id="cancelarModalBtn">Cancelar</button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="descripcionProducto" class="sr-only">Descripción</label>
-            <textarea id="descripcionProducto" name="descripcion" placeholder="Descripción" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="precioProducto" class="sr-only">Precio</label>
-            <input type="text" id="precioProducto" name="precio" placeholder="precio" required>
-        </div>
-        <div class="form-group">
-            <label for="proveedorProducto">Proveedor</label>
-            <select id="proveedorProducto" name="proveedor" required>
-                <option value="">Selecciona un proveedor</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="estadoProducto" class="sr-only">Estado</label>
-            <select id="estadoProducto" name="estado" required>
-                <option value="">Selecciona estado</option>
-                <option value="activo">Activo</option>
-                <option value="espera">Espera</option>
-                <option value="inactivo">Inactivo</option>
-            </select>
-        </div>
-        <div class="modal-botones">
-            <button type="submit" class="btn-amarillo">Guardar</button>
-            <button type="button" class="btn-gris" id="cancelarModalBtn">Cancelar</button>
-        </div>
-    </form>    
-  </div>
-</div>
+    </div>
 
-    <div id="notificacion" class="notificacion"></div>
-
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/productos.js"></script>
 </body>
 </html>
-
-

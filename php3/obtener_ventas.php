@@ -2,7 +2,12 @@
 include('../conexion.php');
 
 $query = "
-    SELECT v.id AS venta_id, v.fecha, GROUP_CONCAT(p.nombre ORDER BY p.nombre) AS productos
+    SELECT 
+        v.id AS venta_id, 
+        v.fecha, 
+        v.metodo_pago, 
+        v.monto_pago, 
+        GROUP_CONCAT(p.nombre ORDER BY p.nombre) AS productos
     FROM venta v
     INNER JOIN venta_producto pv ON v.id = pv.id_venta
     INNER JOIN producto p ON pv.id_producto = p.id
@@ -16,10 +21,12 @@ $ventas = [];
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $ventas[] = [
+            $ventas[] = [
             'id' => $row['venta_id'],
             'fecha' => $row['fecha'],
-            'productos' => $row['productos']
+            'productos' => $row['productos'],
+            'metodo_pago' => $row['metodo_pago'],
+            'monto_pago' => $row['monto_pago']
         ];
     }
 }

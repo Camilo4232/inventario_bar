@@ -2,14 +2,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
 require '../conexion.php';
 
 $sql = "
     SELECT 
         p.nombre AS producto,
         COALESCE(e.total_entradas, 0) AS total_entradas,
-        COALESCE(s.total_salidas, 0) AS total_salidas
+        COALESCE(s.total_salidas, 0) AS total_salidas,
+        COALESCE(v.total_vendidos, 0) AS total_vendidos
     FROM producto p
     LEFT JOIN (
         SELECT producto_id, SUM(cantidad) AS total_entradas
@@ -21,6 +21,11 @@ $sql = "
         FROM salida
         GROUP BY producto_id
     ) s ON p.id = s.producto_id
+    LEFT JOIN (
+        SELECT id_producto AS producto_id, SUM(cantidad) AS total_vendidos
+        FROM venta_producto
+        GROUP BY id_producto
+    ) v ON p.id = v.producto_id
 ";
 
 $result = $conexion->query($sql);
@@ -28,7 +33,8 @@ $result = $conexion->query($sql);
 $inventario = [];
 
 while ($row = $result->fetch_assoc()) {
-    $stock = $row['total_entradas'] - $row['total_salidas'];
+    // Nuevo cálculo del stock incluyendo ventas
+    $stock = $row['total_entradas'] - $row['total_salidas'] - $row['total_vendidos'];
     $inventario[] = [
         'producto' => $row['producto'],
         'stock' => $stock
@@ -38,6 +44,7 @@ while ($row = $result->fetch_assoc()) {
 echo json_encode($inventario);
 $conexion->close();
 ?>
+
 
 
 
